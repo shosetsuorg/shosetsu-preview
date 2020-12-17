@@ -24,6 +24,7 @@ jobs:
           repository: 'shosetsuorg/android-app'
           fetch-depth: 0
         if: github.event.inputs.git-ref == ''
+      
       - name: Clone Repository (Custom Ref)
         uses: actions/checkout@v2
         if: github.event.inputs.git-ref != ''
@@ -37,8 +38,6 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Set up keystore
-        run: mkdir -p ~/.android/ && echo "${{ secrets.DEBUG_KEYSTORE }}" | base64 --decode > ~/.android/debug.keystore
       - name: Build APK
         uses: eskatos/gradle-command-action@v1
         with:
@@ -46,12 +45,13 @@ jobs:
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
+     
       - name: Sign APK
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'tachiyomiorg/tachiyomi'
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/apk/standard/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          signingKeyBase64: ${{ secrets.DEBUG_KEYSTORE }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }} 
@@ -61,6 +61,7 @@ jobs:
           set -x
           echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
           echo "CURRENT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+     
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
@@ -74,6 +75,7 @@ jobs:
             Latest commit: https://github.com/shosetsuorg/android-app/commit/${{ env.CURRENT_SHA }}
           draft: ${{ github.event.inputs.dry-run != '' }}
           prerelease: false
+      
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
