@@ -64,7 +64,6 @@ jobs:
             Latest commit: https://github.com/shosetsuorg/android-app/commit/${{ env.CURRENT_SHA }}
           draft: ${{ github.event.inputs.dry-run != '' }}
           prerelease: false
-      - name: Sign app apk
       - name: Upload APK to release
         uses: actions/upload-release-asset@v1
         env:
