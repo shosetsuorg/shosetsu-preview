@@ -24,7 +24,6 @@ jobs:
           repository: 'shosetsuorg/android-app'
           fetch-depth: 0
         if: github.event.inputs.git-ref == ''
-      
       - name: Clone Repository (Custom Ref)
         uses: actions/checkout@v2
         if: github.event.inputs.git-ref != ''
@@ -45,12 +44,11 @@ jobs:
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
-     
       - name: Sign APK
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'shosetsuorg/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/apk/standard/release
+          releaseDirectory: android/build/outputs/apk/standard/release
           signingKeyBase64: ${{ secrets.DEBUG_KEYSTORE }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -61,7 +59,7 @@ jobs:
           set -x
           echo "COMMIT_COUNT=$(git rev-list --count HEAD)" >> $GITHUB_ENV
           echo "CURRENT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-     
+      
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
