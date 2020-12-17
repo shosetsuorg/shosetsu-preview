@@ -45,7 +45,6 @@ jobs:
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
       - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'shosetsuorg/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: android/build/outputs/apk/debug
