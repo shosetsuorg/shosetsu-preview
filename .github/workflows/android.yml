@@ -47,7 +47,7 @@ jobs:
           configuration-cache-enabled: true
      
       - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'tachiyomiorg/tachiyomi'
+        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'shosetsuorg/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/apk/standard/release
