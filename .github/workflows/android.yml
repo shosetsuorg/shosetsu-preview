@@ -80,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: 'android/build/outputs/apk/standard/debug/shosetsu-${{ env.COMMIT_COUNT }}-signed.apk'
+          asset_path: 'android/build/outputs/apk/standard/debug/android-standard-debug.apk'
           asset_name: shosetsu-r${{ env.COMMIT_COUNT }}.apk
           asset_content_type: application/vnd.android.package-archive
           
